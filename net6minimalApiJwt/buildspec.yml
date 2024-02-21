@@ -1,0 +1,17 @@
+version: 0.0
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 378559237380.dkr.ecr.eu-north-1.amazonaws.com
+      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+      - IMAGE_URI="${REPOSITORY_URI}:${TAG}"
+  build:
+    commands:
+      - docker build -t "$IMAGE_URI" .
+  post_build:
+    commands:
+      - docker push "$IMAGE_URI"
+      - printf '[{"name":"dotnet-app","imageUri":"%s"}]' "$IMAGE_URI" > imagedefinition.json
+artifacts:
+  files: imagedefinition.json
+    
