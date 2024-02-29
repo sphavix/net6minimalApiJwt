@@ -4,8 +4,8 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["net6minimalApiJwt/net6minimalApiJwt.csproj", "net6minimalApiJwt/"]
-RUN dotnet restore "net6minimalApiJwt/net6minimalApiJwt.csproj"
+COPY ["net6minimalApiJwt/net6minimalApiJwt/net6minimalApiJwt.csproj", "net6minimalApiJwt/"]
+RUN dotnet restore "net6minimalApiJwt/net6minimalApiJwt/net6minimalApiJwt.csproj"
 COPY . .
 WORKDIR "/src/net6minimalApiJwt"
 RUN dotnet build "net6minimalApiJwt.csproj" -c Release -o /app/build
